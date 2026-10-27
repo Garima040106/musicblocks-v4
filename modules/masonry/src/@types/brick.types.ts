@@ -224,6 +224,8 @@ export interface StatementBrickViewProps extends BrickViewPropsBase {
     /** Whether this brick connects to the following brick in a sequence. */
     hasConnectionNext?: boolean;
 
+    /** Whether to render the alternate-brick switch control. */
+    hasSwitchButton?: boolean;
 }
 
 /** Discriminated union over all brick kinds; narrow via `kind`. */
@@ -267,6 +269,13 @@ export interface StatementBrickViewPropsWithModel {
         isCavityEmpty: boolean;
         /** Flips the model's `isNestingFolded`, through whoever owns the brick's tower. */
         onToggle: () => void;
+    };
+    /** Optional control for replacing this brick with an alternate brick type. */
+    switchButton?: {
+        /** Called when the switch control is activated. */
+        onSwitch: () => void;
+        /** Accessible label and tooltip for the control. */
+        label?: string;
     };
 }
 

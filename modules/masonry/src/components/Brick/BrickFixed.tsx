@@ -1,4 +1,4 @@
-import { ChevronDown, ChevronRight } from 'lucide-react';
+import { ArrowLeftRight, ChevronDown, ChevronRight } from 'lucide-react';
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import type { BrickViewPropsWithModel } from '@/@types/brick.types';
@@ -83,6 +83,8 @@ export function BrickViewFixed(props: BrickViewPropsWithModel) {
   // the `fold` prop there is no tower behind it, so it draws disabled — see the prop's docs.
   const fold = props.kind === 'statement' ? props.fold : undefined;
   const isFoldDisabled = fold === undefined || fold.isCavityEmpty;
+  const switchButton = props.kind === 'statement' ? props.switchButton : undefined;
+  const switchButtonLabel = switchButton?.label ?? 'Switch brick type';
 
   // ── Local layout state ───────────────────────────────────────────────────────
   const [path, setPath] = useState('');
@@ -531,6 +533,32 @@ export function BrickViewFixed(props: BrickViewPropsWithModel) {
         </foreignObject>
       )}
 
+      {switchButton && dims.w > 0 && dims.h > 0 && (
+        <foreignObject
+          x={Math.max(0, svgToPx(dims.w) - minWidgetParamHeight)}
+          y={0}
+          width={minWidgetParamHeight}
+          height={minWidgetParamHeight}
+        >
+          <button
+            type="button"
+            data-switch-button=""
+            data-brick-control=""
+            aria-label={switchButtonLabel}
+            title={switchButtonLabel}
+            onPointerDown={(event) => event.stopPropagation()}
+            onClick={switchButton.onSwitch}
+            className="flex h-full w-full cursor-pointer items-center justify-center rounded-sm border-0 bg-transparent p-0 transition-colors hover:bg-black/10 dark:hover:bg-white/10"
+            style={{ color: colors.foreground }}
+          >
+            <ArrowLeftRight
+              size={minWidgetParamHeight * 0.65}
+              strokeWidth={2.5}
+              aria-hidden="true"
+            />
+          </button>
+        </foreignObject>
+      )}
     </svg>
   );
 }
